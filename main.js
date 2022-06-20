@@ -12,4 +12,16 @@ async function getCardDeck() {
     console.error(e);
   }
 }
-getCardDeck();
+// getCardDeck();
+
+const drawCard = async () => {
+  const deckId = await getCardDeck();
+  // console.log(deckId)
+  try {
+    let card = await axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=1`);
+    console.log(card)
+  } catch (e) {
+    console.error(e);
+  }
+}
+drawCard()
