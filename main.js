@@ -1,7 +1,7 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
 
-async function getCardDeck() {
+ const getCardDeck = async () => {
   try {
     let info = await axios.get('http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1');
     // console.log(info)
@@ -24,4 +24,4 @@ const drawCard = async () => {
     console.error(e);
   }
 }
-drawCard()
+// drawCard()
