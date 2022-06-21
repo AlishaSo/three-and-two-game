@@ -2,8 +2,8 @@ import axios from 'axios';
 import dotenv from 'dotenv';
 
 let deckId;
-const player1Cards = document.querySelector('#player1-cards');
-const player2Cards = document.querySelector('#player2-cards');
+const player1Cards = document.querySelectorAll('#player1-cards .card');
+const player2Cards = document.querySelectorAll('#player2-cards .card');
 
  const getCardDeck = async () => {
   try {
@@ -24,7 +24,7 @@ const drawCard = async count => {
   // await getCardDeck();
   try {
     let info = await axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=${count}`);
-    console.log(info)
+    // console.log(info)
     return info.data.cards;
   } catch (e) {
     console.error(e);
@@ -41,7 +41,10 @@ const setupTable = async () => {
   player2Pile = await drawCard(5);
   console.log({player1Pile})
   console.log({player2Pile})
-  // const p2Card1Div = document.querySelector('#player2-cards .card1');
-  // p2Card1Div.innerHTML = `<img src='${player2Pile.image}'/>`
+
+  for(let i = 0; i < 5; i++) {
+    player1Cards[i].innerHTML = `<img src='${player1Pile[i].image}'/>`;
+    player2Cards[i].innerHTML = `<img src='${player2Pile[i].image}'/>`;
+  }
 }
-// setupTable();
+setupTable();
