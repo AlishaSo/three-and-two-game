@@ -9,6 +9,8 @@ body {
   padding: 0;
   min-height: 100vh;
   font-family: 'Arima Madurai', cursive;
+  font-size: 1rem;
+  background-color: #00A000;
 }
 
 header {
@@ -30,13 +32,33 @@ h1 {
   margin: 5vh auto;
   display: flex;
   justify-content: space-between;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 #sidebar {
-  min-width: 150px;
+  min-width: 160px;
   height: 50%;
-  border: 1px solid yellow;
+  /* border: 1px solid #B5B816; */
+  background-color: #B5B816;
+  border-radius: 5px;
+  padding: .95em .5em .5em;
+  margin-top: 2em;
+  box-shadow: 0 0 6px #1b1b1b;
+  text-align: center;
+}
+
+.btn {
+  border: 0;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 1rem;
+  box-shadow: 0 0 6px #1629B8;
+  cursor: pointer;
+}
+
+hr {
+  width: 90%;
+  color: #1b1b1b;
 }
 
 main {
@@ -49,6 +71,8 @@ main {
 
 .player-name {
   text-align: center;
+  color: #B5B816;
+  text-shadow: 0 0 5px #1b1b1b;
 }
 
 .card {
@@ -68,7 +92,7 @@ img {
 #player2-side {
   width: 100%;
   height: 33.33%;
-  border: 1px solid slateblue;
+  /* border: 1px solid slateblue; */
 }
 
 .player-name {
@@ -80,7 +104,6 @@ img {
 #player2-cards {
   width: 100%;
   display: flex;
-  align-items: center;
   justify-content: space-between;
   /* border: 1px solid red; */
 }
