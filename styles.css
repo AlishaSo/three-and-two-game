@@ -7,7 +7,33 @@
 body {
   margin: 0;
   padding: 0;
+  min-height: 100vh;
   font-family: 'Arima Madurai', cursive;
+}
+
+.wrapper {
+  min-width: 800px;
+  max-width: 1000px;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid black;
+}
+
+#sidebar {
+  min-width: 150px;
+  height: 100%;
+  border: 1px solid yellow;
+}
+
+main {
+  min-width: 600px;
+  align-self: center;
+}
+
+.player-name {
+  text-align: center;
 }
 
 div {
@@ -18,4 +44,25 @@ div {
 img {
   width: 100%;
   height: 100%;
+}
+
+#player1-side,
+#player2-side {
+  width: 100%;
+  height: 40%;
+  border: 1px solid slateblue;
+}
+
+#player1-cards,
+#player2-cards {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 600px;
+  border: 1px solid red;
+}
+
+#player1-cards {
+  /* padding-top: 10vh; */
 }
