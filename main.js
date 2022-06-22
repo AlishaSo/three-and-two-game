@@ -1,13 +1,15 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
+dotenv.config();
 
+const BASE_URL = process.env.BASE_URL;
 let deckId;
 const player1Cards = document.querySelectorAll('#player1-cards .card');
 const player2Cards = document.querySelectorAll('#player2-cards .card');
 
  const getCardDeck = async () => {
   try {
-    let info = await axios.get('http://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1');
+    let info = await axios.get(`${BASE_URL}new/shuffle/?deck_count=1`);
     // console.log(info)
     deckId = await info.data.deck_id;
     // console.log(deckId)
@@ -23,7 +25,7 @@ const drawCard = async count => {
   // console.log(deckId)
   // await getCardDeck();
   try {
-    let info = await axios.get(`https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=${count}`);
+    let info = await axios.get(`${BASE_URL}${deckId}/draw/?count=${count}`);
     // console.log(info)
     return info.data.cards;
   } catch (e) {
