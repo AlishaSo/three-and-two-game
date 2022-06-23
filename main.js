@@ -12,6 +12,11 @@ player2Cards = Array.from(player2Cards);
 const pickupPile = document.querySelector('#pickup-pile');
 const discardPile = document.querySelector('#discard-btn');
 let discardList;
+const pickupPileImg = document.querySelector('#pickup-pile-img');
+let player1Pile;
+let player2Pile;
+let pickedUpCard;
+let usersTurn = true;
 
  const getCardDeck = async () => {
   try {
@@ -59,36 +64,86 @@ const setupTable = async () => {
 }
 // setupTable();
 
-const playGame = async () => {
-  let [player1Pile, player2Pile] = await setupTable();
-  let pickedUpCard;
-  const pickupPileImg = document.querySelector('#pickup-pile-img');
+// const do1 = (card, i) => {
+//   if(usersTurn) {
+//     player1Pile[i] = pickedUpCard;
+//     card.innerHTML = `<img src='${pickedUpCard[0].image}' alt=''/>`;
+//     pickupPileImg.src = img;
+//   pickedUpCard = '';
+//   }
+// }
 
-  player1Cards.forEach((card,i) => {
-   card.addEventListener('click', () => {
-    player1Pile[i] = pickedUpCard;
-    card.innerHTML = `<img src='${pickedUpCard[0].image}' alt=''/>`;
-    pickupPileImg.src = img;
-    });
-  });
-  
-  player2Cards.forEach((card,i) => {
-   card.addEventListener('click', () => {
-    player2Pile[i] = pickedUpCard;
-    card.innerHTML = `<img src='${pickedUpCard[0].image}' alt=''/>`;
-    pickupPileImg.src = img;
-   });
-  });
-   
-  pickupPile.addEventListener('click', async () => {
+// function do2(card, i, pickedUpCard) {
+//   if(!usersTurn) {
+//     player2Pile[i] = pickedUpCard;
+//     card.innerHTML = `<img src='${pickedUpCard[0].image}' alt=''/>`;
+//     pickupPileImg.src = img;
+//   }
+// }
+
+pickupPile.onclick = async () => {
     pickedUpCard = await drawCard(1);
     // console.log(pickedUpCard)
     pickupPileImg.setAttribute('src', pickedUpCard[0].image);
-  });
+}
+
+const playGame = async () => {
+  let [ p1,  p2] = await setupTable();
+  player1Pile = p1;
+  player2Pile = p2;
+  let tempBool = true;
+
+  let i = 0;
+  while(tempBool) {
+   i++; console.log({i, usersTurn})
+  // pickupPile.addEventListener('click', async () => {
+  //   pickedUpCard = await drawCard(1);
+  //   // console.log(pickedUpCard)
+  //   pickupPileImg.setAttribute('src', pickedUpCard[0].image);
+  // });
   
   discardPile.addEventListener('click', async () => {
     await axios.get(`${BASE_URL}/${deckId}/pile/discard/add/?cards=${pickedUpCard[0].code}`);
     pickupPileImg.src = img;
   });
+
+  // if(usersTurn) {
+    // player2Cards.forEach((card,i) => {
+    //   card.removeEventListener('click', () => {
+    //    player2Pile[i] = pickedUpCard;
+    //    card.innerHTML = `<img src='${pickedUpCard[0].image}' alt=''/>`;
+    //    pickupPileImg.src = img;
+    //   });
+    //  });
+
+  player1Cards.forEach((card,i) => {
+   card.onclick = () => {
+    if(usersTurn) {
+      player1Pile[i] = pickedUpCard;
+      card.innerHTML = `<img src='${pickedUpCard[0].image}' alt=''/>`;
+      pickupPileImg.src = img;
+    pickedUpCard = undefined;
+    }
+  };
+  });
+  // }
+  
+  // else {
+    // player1Cards.forEach((card,i) => {
+    //   card.removeEventListener('click', () => {
+    //    player1Pile[i] = pickedUpCard;
+    //    card.innerHTML = `<img src='${pickedUpCard[0].image}' alt=''/>`;
+    //    pickupPileImg.src = img;
+    //    });
+    //  });
+
+  // player2Cards.forEach((card,i) => {
+  //  card.addEventListener('click', () => do2(player2Pile, card, i, pickedUpCard));
+  // });
+  // }
+  usersTurn = !usersTurn;
+  if(i == 2)
+    tempBool = false;
+  }
 }
 playGame()
