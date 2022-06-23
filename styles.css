@@ -99,11 +99,11 @@ img {
   justify-content: center;
 }
 
-#discard-btn {
+/* #discard-btn {
   padding: 58px calc((45px * 5 / 7) / 2);
   font-size: 1.25rem;
   text-shadow: 2px 2px 2px #B5B816, 2px 2px 2px #1b1b1b;
-}
+} */
 
 #player1-side,
 #player2-side {

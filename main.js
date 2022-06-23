@@ -10,11 +10,12 @@ player1Cards = Array.from(player1Cards);
 let computersCards = document.querySelectorAll('#player2-cards .card');
 computersCards = Array.from(computersCards);
 const pickupPile = document.querySelector('#pickup-pile');
-const discardPile = document.querySelector('#discard-btn');
+const discardPile = document.querySelector('#discard-pile');
 let discardList;
 const pickupPileImg = document.querySelector('#pickup-pile-img');
 let player1Pile;
 let computersPile;
+let discardCard;
 let pickedUpCard = null;
 let usersTurn = true;
 
@@ -47,20 +48,20 @@ const drawCard = async count => {
 
 const setupTable = async () => {
   await getCardDeck();
-  let player1Pile;
-  let computersPile;
+  // let player1Pile;
+  // let computersPile;
 
   player1Pile = await drawCard(5);
   computersPile = await drawCard(5);
-  // console.log({player1Pile})
-  // console.log({player2Pile})
+  discardCard = await drawCard(1);
 
+  discardPile.innerHTML = `<img src='${discardCard[0].image}' alt=''/>`;
   for(let i = 0; i < 5; i++) {
     player1Cards[i].innerHTML = `<img src='${player1Pile[i].image}' alt=''/>`;
     
     computersCards[i].innerHTML = `<img src='${computersPile[i].image}' alt=''/>`;
   }
-  return [player1Pile, computersPile];
+  // return [player1Pile, computersPile];
 }
 // setupTable();
 
@@ -71,9 +72,10 @@ pickupPile.onclick = async () => {
 }
 
 const playGame = async () => {
-  let [ p1,  p2] = await setupTable();
-  player1Pile = p1;
-  computersPile = p2;
+  // let [ p1,  p2] = await setupTable();
+  // player1Pile = p1;
+  // computersPile = p2;
+  await setupTable();
   let tempBool = true;
 
   let i = 0;
@@ -86,18 +88,18 @@ const playGame = async () => {
   });
 
   if(usersTurn) {
-  player1Cards.forEach((card,i) => {
-    card.onclick = () => {
-      if(usersTurn) {
-        if(pickedUpCard != null){
-          player1Pile[i] = pickedUpCard;
-          card.innerHTML = `<img src='${pickedUpCard[0].image}' alt=''/>`;
-          pickupPileImg.src = img;
-          pickedUpCard = null;
+    player1Cards.forEach((card,i) => {
+      card.onclick = () => {
+        if(usersTurn) {
+          if(pickedUpCard != null){
+            player1Pile[i] = pickedUpCard;
+            card.innerHTML = `<img src='${pickedUpCard[0].image}' alt=''/>`;
+            pickupPileImg.src = img;
+            pickedUpCard = null;
+          }
         }
-      }
-    };
-  });
+      };
+    });
   }
   
   else {
