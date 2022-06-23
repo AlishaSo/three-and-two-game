@@ -7,10 +7,77 @@
 body {
   margin: 0;
   padding: 0;
+  min-height: 100vh;
   font-family: 'Arima Madurai', cursive;
+  font-size: 1rem;
+  background-color: #00A000;
 }
 
-div {
+header {
+  background-color: #1b1b1b;
+  padding: 1em;
+}
+
+h1 {
+  margin: 0;
+  text-align: center;
+  color: #B5B816;
+  text-shadow: -3px -2px 4px #1629B8;
+}
+
+.wrapper {
+  min-width: 600px;
+  max-width: 800px;
+  min-height: 80vh;
+  margin: 5vh auto;
+  display: flex;
+  justify-content: space-between;
+  /* border: 1px solid black; */
+}
+
+#sidebar {
+  min-width: 160px;
+  height: 50%;
+  /* border: 1px solid #B5B816; */
+  background-color: #B5B816;
+  border-radius: 5px;
+  padding: .95em .5em .5em;
+  margin-top: 2em;
+  box-shadow: 0 0 6px #1b1b1b;
+  text-align: center;
+}
+
+.btn {
+  border: 0;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 1rem;
+  box-shadow: 0 0 6px #1629B8;
+  cursor: pointer;
+}
+
+hr {
+  width: 90%;
+  color: #1b1b1b;
+}
+
+main {
+  min-width: 600px;
+  /* align-self: center; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.player-name-el{
+  text-align: center;
+  color: #B5B816;
+  text-shadow: 0 0 5px #1b1b1b;
+  margin-top: .6em;
+  margin-bottom: .6em;
+}
+
+.card {
   height: 140px;
   width: calc(140px * 5 / 7);
 }
@@ -18,4 +85,37 @@ div {
 img {
   width: 100%;
   height: 100%;
+}
+
+#pickup-pile {
+  /* height: 180px;
+  width: calc(180px * 5 / 7); */
+  margin-right: 2em;
+}
+
+#pickup-and-discard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#discard-btn {
+  padding: 58px calc((45px * 5 / 7) / 2);
+  font-size: 1.25rem;
+  text-shadow: 2px 2px 2px #B5B816, 2px 2px 2px #1b1b1b;
+}
+
+#player1-side,
+#player2-side {
+  width: 100%;
+  height: 33.33%;
+  /* border: 1px solid slateblue; */
+}
+
+#player1-cards,
+#player2-cards {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  /* border: 1px solid red; */
 }
