@@ -11,7 +11,7 @@ let player2Cards = document.querySelectorAll('#player2-cards .card');
 player2Cards = Array.from(player2Cards);
 const pickupPile = document.querySelector('#pickup-pile');
 const discardPile = document.querySelector('#discard-btn');
-let currentClickedCardIndex;
+let discardList;
 
  const getCardDeck = async () => {
   try {
@@ -60,34 +60,35 @@ const setupTable = async () => {
 // setupTable();
 
 const playGame = async () => {
-  // await setupTable()
-  // console.log(currentClickedCardIndex)
   let [player1Pile, player2Pile] = await setupTable();
-  // let drawPile;
   let pickedUpCard;
-  const pickupPileImg = document.querySelector('#pickup-pile-img')
+  const pickupPileImg = document.querySelector('#pickup-pile-img');
 
   player1Cards.forEach((card,i) => {
    card.addEventListener('click', () => {
-    currentClickedCardIndex = i; 
-    console.log(player1Pile[currentClickedCardIndex])
-    player1Pile[currentClickedCardIndex] = pickedUpCard;
+    player1Pile[i] = pickedUpCard;
     card.innerHTML = `<img src='${pickedUpCard[0].image}' alt=''/>`;
     pickupPileImg.src = img;
-    })
-  })
+    });
+  });
+  
   player2Cards.forEach((card,i) => {
-   card.addEventListener('click', () => {currentClickedCardIndex = i; console.log(currentClickedCardIndex)})
-  })
+   card.addEventListener('click', () => {
+    player2Pile[i] = pickedUpCard;
+    card.innerHTML = `<img src='${pickedUpCard[0].image}' alt=''/>`;
+    pickupPileImg.src = img;
+   });
+  });
    
   pickupPile.addEventListener('click', async () => {
-    console.log('pickup clicked')
-    // drawPile = await axios.get(`${BASE_URL}${deckId}/`);
     pickedUpCard = await drawCard(1);
     // console.log(pickedUpCard)
-    // pickupPileImg.classList.add('card');
     pickupPileImg.setAttribute('src', pickedUpCard[0].image);
   });
   
+  discardPile.addEventListener('click', async () => {
+    await axios.get(`${BASE_URL}/${deckId}/pile/discard/add/?cards=${pickedUpCard[0].code}`);
+    pickupPileImg.src = img;
+  });
 }
 playGame()
