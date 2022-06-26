@@ -1,23 +1,25 @@
-import axios from 'axios';
-import dotenv from 'dotenv';
-dotenv.config();
-import img from './card-back-black.png';
+// import axios from 'axios';
+// import dotenv from 'dotenv';
+// dotenv.config();
+// import img from './card_back.svg';
+const img = 'card_back.svg'
 
-const BASE_URL = process.env.BASE_URL;
+const BASE_URL = 'http://deckofcardsapi.com/api/deck/'//process.env.BASE_URL;
 let deckId;
-let player1Cards = document.querySelectorAll('#player1-cards .card');
+let player1Cards = document.querySelectorAll('.card-btn');
 player1Cards = Array.from(player1Cards);
 let computersCards = document.querySelectorAll('#player2-cards .card');
 computersCards = Array.from(computersCards);
 const pickupPile = document.querySelector('#pickup-pile');
 const discardPile = document.querySelector('#discard-pile');
-let discardList;
+const discardListName = 'discard';
 const pickupPileImg = document.querySelector('#pickup-pile-img');
-let player1Pile;
-let computersPile;
-let discardCard = [];
+let player1Hand;
+let computersHand;
+let discardCardArr;
 let pickedUpCard = null;
 let usersTurn = true;
+let endUserTurn;
 
  const getCardDeck = async () => {
   try {
@@ -48,26 +50,103 @@ const drawCard = async count => {
 const setupTable = async () => {
   await getCardDeck();
 
-  player1Pile = await drawCard(5);
-  computersPile = await drawCard(5);
-  discardCard.push(await drawCard(1));
+  player1Hand = await drawCard(5);
+  computersHand = await drawCard(5);
+  discardCardArr = await drawCard(1);
 
-  discardPile.innerHTML = `<img src='${discardCard[0][0].image}' alt=''/>`;
+  discardPile.innerHTML = `<img src='${discardCardArr[0].image}' alt=''/>`;
 
   for(let i = 0; i < 5; i++) {
-    player1Cards[i].innerHTML = `<img src='${player1Pile[i].image}' alt=''/>`;
+    player1Cards[i].innerHTML = `<img src='${player1Hand[i].image}' alt=''/>`;
+    player1Cards[i].setAttribute('id', player1Hand[i].code);
     
-    computersCards[i].innerHTML = `<img src='${computersPile[i].image}' alt=''/>`;
+    computersCards[i].innerHTML = `<img src='${computersHand[i].image}' alt=''/>`;
   }
 }
 // setupTable();
 
-pickupPile.onclick = async () => {
-  if(usersTurn) {
+const pick = async () => {
     pickedUpCard = await drawCard(1);
+    pickedUpCard = pickedUpCard[0];
     // console.log(pickedUpCard)
-    pickupPileImg.setAttribute('src', pickedUpCard[0].image);
+    pickupPileImg.setAttribute('src', pickedUpCard.image);
+}
+
+const addCardToApiPile = async index => {
+  await axios.get(`${BASE_URL}/${deckId}/pile/${discardListName}/add/?cards=${discardCardArr[index].code}`);
+}
+
+const dis = async () => {
+  if(pickedUpCard != null) {
+    let index = discardCardArr.length == 2 ? 1 : 0;
+    discardCardArr.push(pickedUpCard);
+    addCardToApiPile(0);
+      // console.log(discardCardArr)
+    discardCardArr.shift();
+    discardPile.innerHTML = `<img src='${discardCardArr[index].image}' alt=''/>`;
+    pickedUpCard = null;
+    pickupPileImg.src = img;
   }
+}
+
+const waitForClick = () => {
+  return new Promise(resolve => endUserTurn = resolve);
+}
+
+const addEventListenerToUsersCards = e => {
+  let currentCardIndex = e.currentTarget.id;
+
+  for(const c of player1Hand) {
+    if(c.code == currentCardIndex) {
+      currentCardIndex = player1Hand.indexOf(c);
+      break;
+    }
+  }
+  
+  if(pickedUpCard != null) {
+    addCardToApiPile(0);
+    discardCardArr.shift();
+    discardCardArr.push(player1Hand[currentCardIndex]);
+    player1Hand[currentCardIndex] = pickedUpCard;
+    e.currentTarget.innerHTML = `<img id='${pickedUpCard.value}' src='${pickedUpCard.image}' alt=''/>`;
+    console.log(discardCardArr.length - 1)
+    discardPile.innerHTML = `<img src='${discardCardArr[discardCardArr.length - 1].image}' alt=''/>`;
+    pickupPileImg.src = img;
+    pickedUpCard = null;
+  }
+  else {
+    let index = discardCardArr.length == 2 ? 1 : 0;
+
+    discardCardArr.push(player1Hand[currentCardIndex]);
+    player1Hand[currentCardIndex] = discardCardArr[index];
+    e.currentTarget.innerHTML = `<img id='${discardCardArr[index].code}' src='${discardCardArr[index].image}' alt=''/>`;
+    addCardToApiPile(index);
+    discardCardArr.splice(index, 1);
+    discardPile.innerHTML = `<img src='${discardCardArr[discardCardArr.length - 1].image}' alt=''/>`;
+  }
+   
+  if(endUserTurn) endUserTurn();
+}
+
+const checkForWinner = (cardPile, player) => {
+  let countObj = {}
+  
+  cardPile.forEach(card => {
+    countObj[card.value] ? 
+    countObj[card.value] += 1 
+    : 
+    countObj[card.value] = 1;
+  });
+
+  if(countObj.length == 2) {
+    player == 'user' ?
+    alert('Player1 has won! 😁🙌🏽')
+    :
+    alert('The computer has won ☹️')
+    tempBool = false;
+    return true;
+  }
+  return false;
 }
 
 const playGame = async () => {
@@ -76,61 +155,86 @@ const playGame = async () => {
 
   let i = 0;
   while(tempBool) {
-   i++; console.log({i, usersTurn})
-  
-  discardPile.onclick = async () => {
-    if(usersTurn) {
-      if(pickedUpCard != null) {
-        discardCard[0].push(pickedUpCard[0]);
-        await axios.get(`${BASE_URL}/${deckId}/pile/discard/add/?cards=${pickedUpCard[0].code}`);
-          console.log(discardCard[0])
-        discardPile.innerHTML = `<img src='${discardCard[0][1].image}' alt=''/>`;
-        pickedUpCard = null;
-        pickupPileImg.src = img;
-      }
-      else {
-        await axios.get(`${BASE_URL}/${deckId}/pile/discard/add/?cards=${discardCard[0][0].code}`);
-      }
-    }
-  };
 
   if(usersTurn) {
-    player1Cards.forEach((card,i) => {
-      card.onclick = () => {
-        if(usersTurn) {
-          if(pickedUpCard != null){
-            player1Pile[i] = pickedUpCard;
-            card.innerHTML = `<img src='${pickedUpCard[0].image}' alt=''/>`;
-            pickupPileImg.src = img;
-            pickedUpCard = null;
-          }
-          else {
-            if(discardCard.length == 2) {
-              player1Pile[i] = discardCard[0][1];
-              card.innerHTML = `<img src='${discardCard[0][1].image}' alt=''/>`;
-              discardCard.pop();
-              discardPile.innerHTML = `<img src='${discardCard[0][0].image}' alt=''`;
-            }
-            if(discardCard.length == 1) {
-              discardCard[0].push(player1Pile[i]);
-              player1Pile[i] = discardCard[0][0];
-              card.innerHTML = `<img src='${discardCard[0][0].image}' alt=''/>`;
-              discardPile.innerHTML = `<img src='${discardCard[0][1].image}' alt=''/>`;
-              discardCard[0].shift();
-            }
-          }
-          
-        }
-      }
-    });
+    console.log('inside usersTurn if')
+
+    pickupPile.addEventListener('click', pick, false);
+    discardPile.addEventListener('click', dis, false);
+    player1Cards.forEach(card => card.addEventListener('click', event => addEventListenerToUsersCards(event), false));
+
+    await waitForClick();
+
+    if(!checkForWinner(player1Hand, 'user')) {
+      pickupPile.removeEventListener('click', pick, false);
+      discardPile.removeEventListener('click', dis, false);
+      player1Cards.forEach(card => card.removeEventListener('click', event => addEventListenerToUsersCards(event), false));
+      usersTurn = false;
+    }
   }
   
-  // else {
+  else {
+    console.log('computer\'s turn')
 
-  // }
-  usersTurn = !usersTurn;
-  if(i == 2)
-    tempBool = false;
+    let index = discardCardArr.length == 2 ? 1 : 0;
+    let cardValsArr = [];
+
+    computersHand.forEach((card, index) => {
+      cardValsArr.includes(card.value) ?
+      cardValsArr[index][1] += 1
+      :
+      cardValsArr.push([card.value, 1]);
+    });
+
+    for(const c of computersHand) {
+      if(c.value == discardCardArr[index].value) {
+        let temp = discardCardArr[index];
+        const foundIndex = cardValsArr.findIndex(card => {
+          if(card[0] != temp.value && card[1] == 1) {
+            return card;
+          }
+        });
+        
+        discardCardArr.push(computersHand[foundIndex]);
+        discardCardArr.splice(index, 1);
+        discardPile.innerHTML = `<img src='${discardCardArr[discardCardArr.length - 1].image}' alt=''/>`;
+        computersHand[foundIndex] = temp;
+
+        /****** FOR TESTING ONLY  ******/
+        computersCards[foundIndex].innerHTML = `<img src='${temp.image}' alt=''/>`;
+        /*************     ************/
+        break;
+      }
+      else {
+        pickedUpCard = await drawCard(1);
+        pickedUpCard = pickedUpCard[0];
+
+        if(c.value == pickedUpCard.value) {
+          const foundIndex = cardValsArr.findIndex(card => {
+            if(card[0] != pickedUpCard.value && card[1] == 1) {
+              return card;
+            }
+          });
+          computersHand[foundIndex] = pickedUpCard;
+                  // let test2=discardCardArr.length - 1
+          discardPile.innerHTML = `<img src='${discardCardArr[(discardCardArr.length - 1)].image}' alt=''/>`;
+
+          /****** FOR TESTING ONLY  ******/
+          computersCards[foundIndex].innerHTML = `<img src='${pickedUpCard.image}' alt=''/>`;
+          /*************     ************/
+
+          pickedUpCard = null;
+          break;
+        }
+      }
+    }
+
+    if(!checkForWinner(computersHand, 'computer')) {
+      usersTurn = true;
+    }
   }
+  i++; console.log({i})
+  }
+  console.log('outside while loop')
 }
-playGame()
+playGame();
