@@ -1,8 +1,8 @@
 // import axios from 'axios';
 // import dotenv from 'dotenv';
 // dotenv.config();
-// import img from './card_back.svg';
-const img = 'card_back.svg'
+import img from './card_back.svg';
+// const img = './card_back.svg'
 
 const BASE_URL = 'http://deckofcardsapi.com/api/deck/'//process.env.BASE_URL;
 let player1Cards = document.querySelectorAll('.card-btn');
@@ -99,21 +99,21 @@ const dis = () => {
 
     // discardCardArr.push(pickedUpCard);
     // discardCard[pickedUpCard]
-    addCardToApiPile()
-    .then(nothing => {
-      let p = pickedUpCard
-      discardCard = p
+    // addCardToApiPile()
+    // .then(nothing => {
+    //   let p = pickedUpCard
+      discardCard = pickedUpCard
       // discardCardArr.shift();
       discardPileImg.src = discardCard.image;
       pickedUpCard = null;
       pickupPileImg.src = img;
 
-      if(endUserTurn) endUserTurn();
-    })
+    // })
   }
   else {
     console.log(discardCard);
   }
+      if(endUserTurn) endUserTurn();
 }
 
 const waitForClick = () => {
@@ -121,10 +121,8 @@ const waitForClick = () => {
 }
 
 const addEventListenerToUsersCards = e => {
-  // console.log(discardCardArr)
-  let here = e.currentTarget
+  // let here = e.currentTarget
   let currentCardIndex = e.currentTarget.id;
-  // const index = discardCardArr.length == 2 ? 1 : 0;
 
   for(let n = 0; n < player1Hand.length; n++) {
     if(player1Hand[n].code == currentCardIndex) {
@@ -134,35 +132,28 @@ const addEventListenerToUsersCards = e => {
   }
   
   if(pickedUpCard != null) {
-    // discardCard.push(player1Hand[currentCardIndex]);
-    addCardToApiPile()
-    .then(nothing => {
-      let index = currentCardIndex
-      discardCard = player1Hand[index]
-      player1Hand[index] = pickedUpCard;
-      here.innerHTML = `<img id='${pickedUpCard.value}' src='${pickedUpCard.image}' alt=''/>`;
-      // discardCard.shift();
+    // addCardToApiPile()
+    // .then(nothing => {
+    //   let index = currentCardIndex
+      discardCard = player1Hand[currentCardIndex]
+      player1Hand[currentCardIndex] = pickedUpCard;
+      e.currentTarget.innerHTML = `<img id='${pickedUpCard.value}' src='${pickedUpCard.image}' alt=''/>`;
       discardPileImg.src = discardCard.image;
       pickupPileImg.src = img;
       pickedUpCard = null;
-    })
+    // })
   }
   else {
-    // discardCard.push(player1Hand[currentCardIndex]);
-    addCardToApiPile()
-    .then(nothing => {
-      let index = currentCardIndex
-      discardCard = player1Hand[index]
-      player1Hand[index] = discardCard;
-      here.innerHTML = `<img id='${discardCard.code}' src='${discardCard.image}' alt=''/>`;
-      // discardCardArr.splice(0, 1);
-      // const index = discardCard.length == 2 ? 1 : 0;
+    // addCardToApiPile()
+    // .then(nothing => {
+      // let index = currentCardIndex
+      discardCard = player1Hand[currentCardIndex]
+      player1Hand[currentCardIndex] = discardCard;
+      e.currentTarget.innerHTML = `<img id='${discardCard.code}' src='${discardCard.image}' alt=''/>`;
       discardPileImg.src = discardCard.image;
-      // discardCard.shift();
-    })
+    // })
   }
   if(endUserTurn) endUserTurn();
-  //  console.log(player1Hand)
 }
 
 const checkForWinner = (cardPile, player) => {
@@ -188,7 +179,6 @@ const checkForWinner = (cardPile, player) => {
 }
 
 const shouldComputerTakeDiscard = cardValsArr => {
-  // const index = discardCardArr.length == 2 ? 1 : 0;
   let cardNumExists;
 
   for(const c of computersHand) {
@@ -201,19 +191,18 @@ const shouldComputerTakeDiscard = cardValsArr => {
         }
       });
       
-      addCardToApiPile()
-      .then(nothing => {
-        let index = foundIndex
-        let t = temp
-        discardCard = computersHand[index]
-        computersHand[index] = t;
+      // addCardToApiPile()
+      // .then(nothing => {
+      //   let index = foundIndex
+      //   let t = temp
+        discardCard = computersHand[foundIndex]
+        computersHand[foundIndex] = temp;
         discardPileImg.src = discardCard.image;
-        // discardCardArr.splice(0, 1);
 
         /****** FOR TESTING ONLY  ******/
-        computersCards[index].innerHTML = `<img src='${t.image}' alt=''/>`;
+        computersCards[foundIndex].innerHTML = `<img src='${temp.image}' alt=''/>`;
         /*************     ************/
-      })
+      // })
       break;
     }
     else
@@ -222,11 +211,10 @@ const shouldComputerTakeDiscard = cardValsArr => {
   return cardNumExists;
 }
 
-const computerPickUp = cardValsArr => {
-  console.log(pickedUpCard)
-  // const index = discardCardArr.length == 2 ? 1 : 0;
+const computerPickUp = (cardValsArr, pi) => {
   let cardNumExists = false;
-  let here = pickedUpCard
+  // let here = pickedUpCard
+  pickedUpCard = pi
   
   for(const c of computersHand) {
     if(c.value == pickedUpCard.value) {
@@ -236,33 +224,30 @@ const computerPickUp = cardValsArr => {
           return card;
         }
       });
-    // console.log(foundIndex)
-      // discardCardArr.push(computersHand[foundIndex]);
-      addCardToApiPile()
-      .then(nothing => {
-        let index = foundIndex
-        discardCard = computersHand[index]
-        computersHand[index] = here;
+      
+      // addCardToApiPile()
+      // .then(nothing => {
+      //   let index = foundIndex
+        discardCard = computersHand[foundIndex]
+        computersHand[index] = pickedUpCard;
         discardPileImg.src = discardCard.image;
-        // discardCardArr.shift();
 
         /****** FOR TESTING ONLY  ******/
-        computersCards[index].innerHTML = `<img src='${here.image}' alt=''/>`;
+        computersCards[foundIndex].innerHTML = `<img src='${pickedUpCard.image}' alt=''/>`;
         /*************     ************/
-      })
-      pickedUpCard = null;
+      // })
+      // pickedUpCard = null;
       break;
     }
   }
 
-  if(!cardNumExists) {//discardCardArr.push(pickedUpCard);
-      addCardToApiPile()
-      .then(nothing => {
-        // discardCardArr.shift();
-        discardPileImg.src = here.image;
-  pickedUpCard = null;
-      })
+  if(!cardNumExists) {
+      // addCardToApiPile()
+      // .then(nothing => {
+        discardPileImg.src = pickedUpCard.image;
+      // })
   }
+        pickedUpCard = null;
 }
 
 const playGame = async () => {
@@ -288,44 +273,41 @@ const playGame = async () => {
 
     await waitForClick();
 
-    afterBtnClick();
-    // nextBtn.addEventListener('click', () => {})
+    pickupPile.removeEventListener('click', pick, false);
+    discardPile.removeEventListener('click', dis, false);
+    player1Cards.forEach(card => card.removeEventListener('click', event => addEventListenerToUsersCards(event), false));
 
-      // pickupPile.removeEventListener('click', pick, false);
-      // discardPile.removeEventListener('click', dis, false);
-      // player1Cards.forEach(card => card.removeEventListener('click', event => addEventListenerToUsersCards(event), false));
-
-      // checkForWinner(player1Hand, 'user')
+    checkForWinner(player1Hand, 'user')
     // if(!checkForWinner(player1Hand, 'user')) {
     //   usersTurn = false;
     // }
   }
   
-  // else {
-  //   console.log('computer\'s turn')
+  else {
+    console.log('computer\'s turn')
 
-  //   let cardValsArr = [];
+    let cardValsArr = [];
 
-  //   computersHand.forEach((card, index) => {
-  //     cardValsArr.includes(card.value) ?
-  //     cardValsArr[index][1] += 1
-  //     :
-  //     cardValsArr.push([card.value, 1]);
-  //   });
+    computersHand.forEach((card, index) => {
+      cardValsArr.includes(card.value) ?
+      cardValsArr[index][1] += 1
+      :
+      cardValsArr.push([card.value, 1]);
+    });
 
-  //   if(!shouldComputerTakeDiscard(cardValsArr)) {
-  //     pickedUpCard = await drawCard(1);
-  //     cardsLeftNum -= 1;
-  //     cardsLeftEL.textContent = cardsLeftNum;
-  //     console.log(pickedUpCard)
-  //     computerPickUp(cardValsArr);
-  //   }
+    if(!shouldComputerTakeDiscard(cardValsArr)) {
+      pickedUpCard = await drawCard(1);
+      cardsLeftNum -= 1;
+      cardsLeftEL.textContent = cardsLeftNum;
+      console.log(pickedUpCard)
+      computerPickUp(cardValsArr, pickedUpCard);
+    }
     
-  //   checkForWinner(computersHand, 'computer')
-    // if(!checkForWinner(computersHand, 'computer')) {
-    //   usersTurn = true;
-    // }
-  // }
+    checkForWinner(computersHand, 'computer')
+    if(!checkForWinner(computersHand, 'computer')) {
+      usersTurn = true;
+    }
+  }
   i++; console.log({i})
   }
   console.log('outside while loop')
@@ -340,32 +322,32 @@ playGame();
 //   return;
 // }
 
-const afterBtnClick = () => {
-  checkForWinner(player1Hand, 'user');
+// const afterBtnClick = () => {
+//   checkForWinner(player1Hand, 'user');
 
-  if(!usersTurn) {
-    console.log('computer\'s turn')
+//   if(!usersTurn) {
+//     console.log('computer\'s turn')
 
-    let cardValsArr = [];
+//     let cardValsArr = [];
 
-    computersHand.forEach((card, index) => {
-      cardValsArr.includes(card.value) ?
-      cardValsArr[index][1] += 1
-      :
-      cardValsArr.push([card.value, 1]);
-    });
+//     computersHand.forEach((card, index) => {
+//       cardValsArr.includes(card.value) ?
+//       cardValsArr[index][1] += 1
+//       :
+//       cardValsArr.push([card.value, 1]);
+//     });
 
-    if(!shouldComputerTakeDiscard(cardValsArr)) {
-      drawCard(1)
-      .then(card => {
-        pickedUpCard = card;
-      console.log(pickedUpCard)
-      cardsLeftNum -= 1;
-      cardsLeftEL.textContent = cardsLeftNum;
-      computerPickUp(cardValsArr);
-      })
-    }
+//     if(!shouldComputerTakeDiscard(cardValsArr)) {
+//       drawCard(1)
+//       .then(card => {
+//         pickedUpCard = card;
+//       console.log(pickedUpCard)
+//       cardsLeftNum -= 1;
+//       cardsLeftEL.textContent = cardsLeftNum;
+//       computerPickUp(cardValsArr);
+//       })
+//     }
     
-    checkForWinner(computersHand, 'computer')
-  }
-}
+//     checkForWinner(computersHand, 'computer')
+//   }
+// }
