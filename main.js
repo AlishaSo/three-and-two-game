@@ -1,4 +1,4 @@
-// import axios from 'axios';
+import axios from 'axios';
 // import dotenv from 'dotenv';
 // dotenv.config();
 import img from './card_back.svg';
@@ -93,7 +93,8 @@ const addCardToApiPile = async () => {
   }
 }
 
-const dis = () => {
+const dis = (count) => {
+  console.log(pickedUpCard)
   if(pickedUpCard != null) {
     // let index = discardCardArr.length == 2 ? 1 : 0;
 
@@ -113,7 +114,8 @@ const dis = () => {
   else {
     console.log(discardCard);
   }
-      if(endUserTurn) endUserTurn();
+  if(count == 2)
+    if(endUserTurn) endUserTurn();
 }
 
 const waitForClick = () => {
@@ -179,11 +181,11 @@ const checkForWinner = (cardPile, player) => {
 }
 
 const shouldComputerTakeDiscard = cardValsArr => {
-  let cardNumExists;
+  // let cardNumExists;
 
   for(const c of computersHand) {
     if(c.value == discardCard.value) {
-      cardNumExists = true;
+      // cardNumExists = true;
       let temp = discardCard;
       const foundIndex = cardValsArr.findIndex(card => {
         if(card[0] != temp.value && card[1] == 1) {
@@ -203,18 +205,18 @@ const shouldComputerTakeDiscard = cardValsArr => {
         computersCards[foundIndex].innerHTML = `<img src='${temp.image}' alt=''/>`;
         /*************     ************/
       // })
-      break;
+      if(endUserTurn) endUserTurn();
+      return true;
     }
     else
-      cardNumExists = false;
+      return false;
   }
-  return cardNumExists;
+  // return cardNumExists;
 }
 
-const computerPickUp = (cardValsArr, pi) => {
+const computerPickUp = (cardValsArr) => {
   let cardNumExists = false;
   // let here = pickedUpCard
-  pickedUpCard = pi
   
   for(const c of computersHand) {
     if(c.value == pickedUpCard.value) {
@@ -245,9 +247,11 @@ const computerPickUp = (cardValsArr, pi) => {
       // addCardToApiPile()
       // .then(nothing => {
         discardPileImg.src = pickedUpCard.image;
+        console.log(pickedUpCard)
       // })
   }
         pickedUpCard = null;
+        if(endUserTurn) endUserTurn();
 }
 
 const playGame = async () => {
@@ -255,6 +259,7 @@ const playGame = async () => {
   let keepPlaying = true;
   let usersName = '';
   let i = 0;
+  let count = 0;
 
   usersName = window.prompt('Please enter your name 👇🏽');
   if(usersName != null) {
@@ -267,8 +272,14 @@ const playGame = async () => {
   if(usersTurn) {
     console.log('user\'s turn')
 
-    pickupPile.addEventListener('click', pick, false);
-    discardPile.addEventListener('click', dis, false);
+    pickupPile.addEventListener('click', () => {
+      count++
+      pick()
+    }, false);
+    discardPile.addEventListener('click', () => {
+      count++
+      dis(count)
+    }, false);
     player1Cards.forEach(card => card.addEventListener('click', event => addEventListenerToUsersCards(event), false));
 
     await waitForClick();
@@ -277,10 +288,10 @@ const playGame = async () => {
     discardPile.removeEventListener('click', dis, false);
     player1Cards.forEach(card => card.removeEventListener('click', event => addEventListenerToUsersCards(event), false));
 
-    checkForWinner(player1Hand, 'user')
-    // if(!checkForWinner(player1Hand, 'user')) {
-    //   usersTurn = false;
-    // }
+    // checkForWinner(player1Hand, 'user')
+    if(!checkForWinner(player1Hand, 'user')) {
+      usersTurn = false;
+    }
   }
   
   else {
@@ -300,10 +311,10 @@ const playGame = async () => {
       cardsLeftNum -= 1;
       cardsLeftEL.textContent = cardsLeftNum;
       console.log(pickedUpCard)
-      computerPickUp(cardValsArr, pickedUpCard);
+      computerPickUp(cardValsArr);
+      await waitForClick();
     }
     
-    checkForWinner(computersHand, 'computer')
     if(!checkForWinner(computersHand, 'computer')) {
       usersTurn = true;
     }
