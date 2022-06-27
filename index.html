@@ -6,8 +6,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Arima+Madurai:wght@900&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script defer type='module' src='main.js'></script>
+    <script type='module' src='main.js'></script>
     <link rel='stylesheet' href='styles.css'>
     <title>Three and Two</title>
   </head>
@@ -30,7 +29,7 @@
           </div>
           <hr>
           <div id='cards-left-container'>
-            <h3 id='cards-left'>cards left: 42</h3>
+            <h3 id='cards-left'>cards left: <span>42</span></h3>
           </div>
         </div>
       </aside>
@@ -46,10 +45,9 @@
           </div>
         </div>
         <div id='pickup-and-discard'>
-          <button id="pickup-pile" class='card'>
+          <div id="pickup-pile" class='card'>
             <img id='pickup-pile-img' src='./card_back.svg' alt='placeholder for the draw-pile'/>
-          </button>
-
+          </div>
           <button id="discard-pile" class="card">
             <img id='discard-pile-img' src='#' alt=''/>
           </button>

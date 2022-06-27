@@ -87,16 +87,29 @@ img {
   height: 100%;
 }
 
-#pickup-pile {
-  /* height: 180px;
-  width: calc(180px * 5 / 7); */
-  margin-right: 2em;
+.card-btn {
+  height: 140px;
+  width: calc(140px * 5 / 7);
+  border: 0;
+  background-color: transparent;
 }
 
 #pickup-and-discard {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#pickup-pile,
+#discard-pile {
+  height: 140px;
+  width: calc(140px * 5 / 7);
+  border: 0;
+  background-color: transparent;
+}
+
+#pickup-pile {
+  margin-right: 2em;
 }
 
 #player1-side,

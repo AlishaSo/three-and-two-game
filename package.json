@@ -3,6 +3,9 @@
     "axios": "^0.27.2",
     "dotenv": "^16.0.1"
   },
+  "scripts": {
+    "start": "parcel index.html"
+  },
   "devDependencies": {
     "buffer": "^6.0.3",
     "os-browserify": "^0.3.0",
