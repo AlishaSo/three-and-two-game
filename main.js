@@ -1,10 +1,10 @@
-import axios from 'axios';
-import dotenv from 'dotenv';
-dotenv.config();
-import img from './card_back.svg';
-// const img = 'card_back.svg'
+// import axios from 'axios';
+// import dotenv from 'dotenv';
+// dotenv.config();
+// import img from './card_back.svg';
+const img = 'card_back.svg'
 
-const BASE_URL = process.env.BASE_URL;//'http://deckofcardsapi.com/api/deck/'
+const BASE_URL = 'http://deckofcardsapi.com/api/deck/'//process.env.BASE_URL;
 let player1Cards = document.querySelectorAll('.card-btn');
 player1Cards = Array.from(player1Cards);
 let computersCards = document.querySelectorAll('#player2-cards .card');
