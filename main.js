@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from './node_modules/axios';
 // import dotenv from 'dotenv';
 // dotenv.config();
 // import img from './card_back.svg';
