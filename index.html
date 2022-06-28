@@ -25,8 +25,8 @@
         </div>
         <div id='info-container'>
           <div id='score-tally' class='info'>
-            <h3 id='player1-score'><span class='player-name'>player 1</span>: <span class='player-score'>0</span></h3>
-            <h3 id='player2-score'><span class='player-name'>player 2</span>: <span class='player-score'>0</span></h3>
+            <h3 id='player1-score'><span id='player1-name-span'>Player 1</span>: <span class='player-score'>0</span></h3>
+            <h3 id='player2-score'><span class='player-name'>Computer</span>: <span class='computer-score'>0</span></h3>
           </div>
           <hr>
           <div id='cards-left-container'>
@@ -36,7 +36,7 @@
       </aside>
       <main>
         <div id='player2-side'>
-          <h2 id='player2-name' class='player-name-el player-name'>Player 2</h2>
+          <h2 id='player2-name' class='player-name-el player-name'>Computer</h2>
           <div id='player2-cards' class='cards'>
             <div class='card1 card'></div>
             <div class='card2 card'></div>
@@ -46,9 +46,9 @@
           </div>
         </div>
         <div id='pickup-and-discard'>
-          <div id="pickup-pile" class='card'>
+          <button id="pickup-pile" class='card'>
             <img id='pickup-pile-img' src='./card_back.svg' alt='placeholder for the draw-pile'/>
-          </div>
+          </button>
           <button id="discard-pile" class="card">
             <img id='discard-pile-img' src='#' alt=''/>
           </button>
