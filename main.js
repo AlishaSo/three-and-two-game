@@ -1,3 +1,4 @@
+import axios from 'axios';
 const img = new URL('card_back.svg', import.meta.url);
 
 const BASE_URL = 'https://deckofcardsapi.com/api/deck/';
@@ -25,7 +26,7 @@ let endUserTurn;
 
  const getCardDeck = async () => {
   try {
-    let info = await fetch(`${BASE_URL}new/shuffle/?deck_count=1`);
+    let info = await axios.get(`${BASE_URL}new/shuffle/?deck_count=1`);
     deckId = await info.data.deck_id;
   } catch(e) {
     console.error(e);
@@ -34,7 +35,7 @@ let endUserTurn;
 
 const drawCard = async count => {
   try {
-    let info = await fetch(`${BASE_URL}${deckId}/draw/?count=${count}`);
+    let info = await axios.get(`${BASE_URL}${deckId}/draw/?count=${count}`);
     return info.data.cards;
   } catch (e) {
     console.error(e);
