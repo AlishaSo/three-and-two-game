@@ -532,9 +532,8 @@ function hmrAcceptRun(bundle, id) {
 }
 
 },{}],"adjPd":[function(require,module,exports) {
-// import axios from 'axios';
 const img = new URL(require("643b14b300509a62"));
-const BASE_URL = "http://deckofcardsapi.com/api/deck/";
+const BASE_URL = "https://deckofcardsapi.com/api/deck/";
 let player1Cards = document.querySelectorAll(".card-btn");
 player1Cards = Array.from(player1Cards);
 let computersCards = document.querySelectorAll("#player2-cards .card");
@@ -558,15 +557,15 @@ let usersTurn = true;
 let endUserTurn;
 const getCardDeck = async ()=>{
     try {
-        let info = await axios.get(`${BASE_URL}new/shuffle/?deck_count=1`);
-        deckId = await info.data.deck_id;
+        const info = await axios.get(`${BASE_URL}new/shuffle/?deck_count=1`);
+        deckId = info.data.deck_id;
     } catch (e) {
         console.error(e);
     }
 };
 const drawCard = async (count)=>{
     try {
-        let info = await axios.get(`${BASE_URL}${deckId}/draw/?count=${count}`);
+        const info = await axios.get(`${BASE_URL}${deckId}/draw/?count=${count}`);
         return info.data.cards;
     } catch (e) {
         console.error(e);
