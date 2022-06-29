@@ -4,8 +4,8 @@
   "license": "MIT",
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
-    "start": "parcel index.html",
-    "build": "parcel build"
+    "build": "parcel build",
+    "start": "parcel index.html"
   },
   "devDependencies": {
     "buffer": "^6.0.3",
