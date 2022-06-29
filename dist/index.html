@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Arima+Madurai:wght@900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/index.63aff760.js" defer=""></script>
+    <link rel="stylesheet" href="/index.1303bb05.css">
+    <title>Three and Two</title>
+  </head>
+
+  <body>
+    <header>
+      <h1>Three & Two</h1>
+    </header>
+
+    <div class="wrapper">
+      <aside id="sidebar">
+        <div id="btn-container">
+          <button id="reset-btn" class="btn">Reset</button>
+        </div>
+        <div id="info-container">
+          <div id="score-tally" class="info">
+            <h3 id="player1-score"><span id="player1-name-span">Player 1</span>: <span class="player-score">0</span></h3>
+            <h3 id="player2-score"><span class="player-name">Computer</span>: <span class="computer-score">0</span></h3>
+          </div>
+          <hr>
+          <div id="cards-left-container">
+            <h3 id="cards-left">cards left: <span>42</span></h3>
+          </div>
+        </div>
+      </aside>
+      <main>
+        <div id="player2-side">
+          <h2 id="player2-name" class="player-name-el player-name">Computer</h2>
+          <div id="player2-cards" class="cards">
+            <div class="card1 card"></div>
+            <div class="card2 card"></div>
+            <div class="card3 card"></div>
+            <div class="card4 card"></div>
+            <div class="card5 card"></div>
+          </div>
+        </div>
+        <div id="pickup-and-discard">
+          <button id="pickup-pile" class="card">
+            <img id="pickup-pile-img" src="/card_back.d444d91b.svg" alt="placeholder for the draw-pile">
+          </button>
+          <button id="discard-pile" class="card">
+            <img id="discard-pile-img" src="#" alt="">
+          </button>
+        </div>
+        <div id="player1-side">
+          <div id="player1-cards" class="cards">
+            <button class="card1 card-btn"></button>
+            <button class="card2 card-btn"></button>
+            <button class="card3 card-btn"></button>
+            <button class="card4 card-btn"></button>
+            <button class="card5 card-btn"></button>
+          </div>
+          <h2 id="player1-name" class="player-name-el player-name">Player 1</h2>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

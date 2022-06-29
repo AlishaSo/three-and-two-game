@@ -1,10 +1,7 @@
-import axios from 'axios';
-// import dotenv from 'dotenv';
-// dotenv.config();
-// import img from './card_back.svg';
+// import axios from 'axios';
 const img = new URL('card_back.svg', import.meta.url);
 
-const BASE_URL = 'http://deckofcardsapi.com/api/deck/'//process.env.BASE_URL;
+const BASE_URL = 'http://deckofcardsapi.com/api/deck/';
 let player1Cards = document.querySelectorAll('.card-btn');
 player1Cards = Array.from(player1Cards);
 let computersCards = document.querySelectorAll('#player2-cards .card');
@@ -14,7 +11,7 @@ const discardPile = document.querySelector('#discard-pile');
 const discardListName = 'discard';
 const discardPileImg = document.querySelector('#discard-pile-img');
 const pickupPileImg = document.querySelector('#pickup-pile-img');
-const nextBtn = document.querySelector('#next-btn');
+const resetBtn = document.querySelector('#reset-btn');
 const usersNameEl = document.querySelector('#player1-name');
 const usersNameScoreEl = document.querySelector('#player1-name-span');
 const cardsLeftEL = document.querySelector('#cards-left span');
@@ -58,11 +55,12 @@ const setupTable = async () => {
     player1Cards[i].innerHTML = `<img src='${player1Hand[i].image}' alt=''/>`;
     player1Cards[i].setAttribute('id', player1Hand[i].code);
     
-    computersCards[i].innerHTML = `<img src='${computersHand[i].image}' alt=''/>`;
+    computersCards[i].innerHTML = `<img src='${img}' alt=''/>`;
   }
 }
 
 const pick = async () => {
+  pickupPile.disabled = true;
   try {
     pickedUpCard = await drawCard(1);
     pickedUpCard = pickedUpCard[0];
@@ -85,6 +83,7 @@ const addCardToApiPile = async () => {
 }
 
 const dis = (count) => {
+  discardPile.disabled = true;
   if(pickedUpCard != null) {
     // addCardToApiPile()
     // .then(nothing => {
@@ -104,6 +103,7 @@ const waitForClick = () => {
 }
 
 const addEventListenerToUsersCards = e => {
+  player1Cards.disabled = true;
   let currentCardIndex = e.currentTarget.id;
   let temp = pickedUpCard ? pickedUpCard : discardCard;
 
@@ -117,7 +117,6 @@ const addEventListenerToUsersCards = e => {
   if(pickedUpCard != null) {
     // addCardToApiPile()
     // .then(nothing => {
-      console.log('user event if'+player1Hand[currentCardIndex])
       discardCard = player1Hand[currentCardIndex]
       player1Hand[currentCardIndex] = temp;
       e.currentTarget.innerHTML = `<img id='${player1Hand[currentCardIndex].value}' src='${player1Hand[currentCardIndex].image}' alt=''/>`;
@@ -158,80 +157,66 @@ const checkForWinner = (cardPile, player) => {
   return false;
 }
 
-const shouldComputerTakeDiscard = countObj => {
+function shouldComputerTakeDiscard(countObj) {
   let cardNumExists = false;
   let temp = discardCard;
   let foundIndex;
-
-console.log(countObj)
+  
   if(computersHand.some(c => c.value == temp.value) && countObj[temp.value].count < 3) {
     cardNumExists = true;
         for(const key in countObj) {
-          if(key != temp.value && countObj[key].count == 1)
+          if(key != temp.value && countObj[key].count == 1) {
             foundIndex = countObj[key].index;
             break;
+          }
         }
-      console.log(foundIndex)
       
       // addCardToApiPile()
       // .then(nothing => {
         discardCard = computersHand[foundIndex]
         computersHand[foundIndex] = temp;
         discardPileImg.src = discardCard.image;
-
-        /****** FOR TESTING ONLY  ******/
-        computersCards[foundIndex].innerHTML = `<img src='${temp.image}' alt=''/>`;
-        /*************     ************/
       // })
+      foundIndex = null;
   }
-console.log(computersHand)
   return cardNumExists;
 }
 
-const computerPickUp = countObj => {
-console.log(countObj)
+function computerPickUp(countObj) {
   let cardNumExists = false;
-  let temp = pickedUpCard[0];
+  let tempPick = pickedUpCard[0];
+  let tempDis = discardCard;
   let foundIndex;
-  // for(const c of computersHand) {
-  //   if(c.value == temp.value) {
-    if(computersHand.some(c => c.value == temp.value) && countObj[temp.value].count < 3) {
-      cardNumExists = true;
-      
-      for(const key in countObj) {
-        if(key != temp.value && countObj[key].count == 1)
-          foundIndex = countObj[key].index;
-          break;
+  
+  if(computersHand.some(c => c.value == tempPick.value) && countObj[tempPick.value].count < 3) {
+    cardNumExists = true;
+    for(const key in countObj) {
+      if(key != tempPick.value && countObj[key].count == 1) {
+        foundIndex = countObj[key].index;
+        break;
       }
-      console.log(foundIndex)
-      
-      // addCardToApiPile()
-      // .then(nothing => {
-        discardCard = computersHand[foundIndex]
-        computersHand[foundIndex] = temp;
-        discardPileImg.src = discardCard.image;
-
-        /****** FOR TESTING ONLY  ******/
-        computersCards[foundIndex].innerHTML = `<img src='${temp.image}' alt=''/>`;
-        /*************     ************/
-      // })
-      // pickedUpCard = null;
     }
+    
+    // addCardToApiPile()
+    // .then(nothing => {
+      discardCard = computersHand[foundIndex]
+      computersHand[foundIndex] = tempPick;
+      discardPileImg.src = tempDis.image;
+    // })
+  }
 
   if(!cardNumExists) {
-      // addCardToApiPile()
-      // .then(nothing => {
-        discardCard = temp;
-        discardPileImg.src = temp.image;
-        console.log(temp)
-      // })
+    // addCardToApiPile()
+    // .then(nothing => {
+      discardCard = tempPick;
+      discardPileImg.src = tempPick.image;
+    // })
   }
   pickedUpCard = null;
-console.log(computersHand)
 }
 
 const playGame = async () => {
-  await setupTable()
+  await setupTable();
   let keepPlaying = true;
   let usersName = '';
   let i = 0;
@@ -275,7 +260,10 @@ const playGame = async () => {
 
   while(keepPlaying) {
     if(usersTurn) {
-      console.log('user\'s turn')
+      pickupPile.disabled = false;
+      discardPile.disabled = false;
+      player1Cards.disabled = false;
+
       count = 0;
 
       await waitForClick();
@@ -288,8 +276,6 @@ const playGame = async () => {
     }
   
     else {
-      console.log('computer\'s turn')
-
       let countObj = {};
       
       computersHand.forEach((card, index) => {
@@ -309,11 +295,18 @@ const playGame = async () => {
       if(!checkForWinner(computersHand, 'computer')) {
         usersTurn = true;
       }
-      else
+      else {
+        for(let n = 0; n < computersHand.length; n++) {
+          computersCards[n].innerHTML = `<img src='${computersHand[n].image}' alt=''/>`;
+        }
         keepPlaying = false;
+      }
     }
-  i++; console.log({i})
   }
   removeClickListeners();
 }
 playGame();
+
+resetBtn.addEventListener('click', () => {
+  playGame();
+}, { once: true });
