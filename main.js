@@ -1,6 +1,6 @@
 const img = new URL('card_back.svg', import.meta.url);
 
-const BASE_URL = 'http://deckofcardsapi.com/api/deck/';
+const BASE_URL = 'https://deckofcardsapi.com/api/deck/';
 let player1Cards = document.querySelectorAll('.card-btn');
 player1Cards = Array.from(player1Cards);
 let computersCards = document.querySelectorAll('#player2-cards .card');
