@@ -5,7 +5,7 @@
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "dependencies": {
     "parcel": "^2.6.1"
-  }
+  },
   "scripts": {
     "build": "parcel build",
     "start": "parcel index.html"
