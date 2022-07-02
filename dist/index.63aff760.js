@@ -558,6 +558,8 @@ let pickedUpCard = null;
 let cardsLeftNum = 42;
 let usersTurn = true;
 let endUserTurn;
+const playerScoreEl = document.querySelector("#player-score");
+const computerScoreEl = document.querySelector("#computer-score");
 const getCardDeck = async ()=>{
     try {
         let info = await (0, _axiosDefault.default).get(`${BASE_URL}new/shuffle/?deck_count=1`);
@@ -655,11 +657,19 @@ const addEventListenerToUsersCards = (e)=>{
 };
 const checkForWinner = (cardPile, player)=>{
     let countObj = {};
+    let gamesWon = 0;
+    player = !player ? "Player1" : player;
     cardPile.forEach((card)=>{
         countObj[card.value] ? countObj[card.value] += 1 : countObj[card.value] = 1;
     });
     if (Object.keys(countObj).length == 2) {
-        player == "user" ? alert("Player1 has won! \uD83D\uDE01\uD83D\uDE4C\uD83C\uDFFD") : alert("The computer has won \u2639\uFE0F");
+        player != "computer" ? alert(`${player} has won! 😁🙌🏽`) : alert("The computer has won \u2639\uFE0F");
+        gamesWon = sessionStorage.getItem(player);
+        if (gamesWon) {
+            console.log(player, gamesWon);
+            gamesWon++;
+            sessionStorage.setItem(player, gamesWon);
+        } else sessionStorage.setItem(player, 1);
         return true;
     }
     return false;
@@ -715,9 +725,28 @@ const playGame = async ()=>{
     await setupTable();
     let keepPlaying = true;
     let usersName = "";
-    let i = 0;
     let count = 0;
-    if (checkForWinner(player1Hand, "user") || checkForWinner(computersHand, "computer")) alert("You lucked out and won without even lifting a finger! \uD83C\uDF89\uD83D\uDC4C\uD83C\uDFFD");
+    if (!sessionStorage.getItem("user name")) {
+        usersName = window.prompt("Please enter your name \uD83D\uDC47\uD83C\uDFFD");
+        if (usersName) {
+            sessionStorage.setItem("user name", usersName);
+            usersNameEl.textContent = usersName;
+            usersNameScoreEl.textContent = usersName;
+        }
+    } else {
+        usersName = sessionStorage.getItem("user name");
+        usersNameEl.textContent = usersName;
+        usersNameScoreEl.textContent = usersName;
+    }
+    playerScoreEl.textContent = sessionStorage.getItem(usersName) ? sessionStorage.getItem(usersName) : 0;
+    computerScoreEl.textContent = sessionStorage.getItem("Computer") ? sessionStorage.getItem("Computer") : 0;
+    if (checkForWinner(player1Hand, usersName)) {
+        alert("You lucked out and won without even lifting a finger! \uD83C\uDF89\uD83D\uDC4C\uD83C\uDFFD");
+        keepPlaying = false;
+    } else if (checkForWinner(computersHand, "Computer")) {
+        alert("The computer lucked out and won without even trying \uD83D\uDE43\uD83D\uDC4E\uD83C\uDFFD");
+        keepPlaying = false;
+    }
     const drawBtn = ()=>{
         count++;
         pick();
@@ -730,6 +759,12 @@ const playGame = async ()=>{
         addEventListenerToUsersCards.bind(undefined)(event);
     };
     const addClickListeners = ()=>{
+        if (window.innerWidth < 800 && window.innerHeight < 1200) {
+            pickupPile.addEventListener("touchend", drawBtn, false);
+            discardPile.addEventListener("touchend", disBtn, false);
+            player1Cards.forEach((card)=>card.addEventListener("touchend", cardsBtns, false));
+            return;
+        }
         pickupPile.addEventListener("click", drawBtn, false);
         discardPile.addEventListener("click", disBtn, false);
         player1Cards.forEach((card)=>card.addEventListener("click", cardsBtns, false));
@@ -739,11 +774,6 @@ const playGame = async ()=>{
         discardPile.removeEventListener("click", disBtn, false);
         player1Cards.forEach((card)=>card.removeEventListener("click", cardsBtns, false));
     };
-    usersName = window.prompt("Please enter your name \uD83D\uDC47\uD83C\uDFFD");
-    if (usersName) {
-        usersNameEl.textContent = usersName;
-        usersNameScoreEl.textContent = usersName;
-    }
     addClickListeners(count);
     while(keepPlaying)if (usersTurn) {
         pickupPile.disabled = false;
@@ -751,7 +781,7 @@ const playGame = async ()=>{
         player1Cards.disabled = false;
         count = 0;
         await waitForClick();
-        if (!checkForWinner(player1Hand, "user")) usersTurn = false;
+        if (!checkForWinner(player1Hand, usersName)) usersTurn = false;
         else keepPlaying = false;
     } else {
         let countObj = {};
@@ -767,7 +797,7 @@ const playGame = async ()=>{
             cardsLeftEL.textContent = cardsLeftNum;
             computerPickUp(countObj);
         }
-        if (!checkForWinner(computersHand, "computer")) usersTurn = true;
+        if (!checkForWinner(computersHand, "Computer")) usersTurn = true;
         else {
             for(let n = 0; n < computersHand.length; n++)computersCards[n].innerHTML = `<img src='${computersHand[n].image}' alt=''/>`;
             keepPlaying = false;
@@ -777,10 +807,9 @@ const playGame = async ()=>{
 };
 playGame();
 resetBtn.addEventListener("click", ()=>{
+    pickupPileImg.setAttribute("src", img);
     playGame();
-}, {
-    once: true
-});
+}, false);
 
 },{"643b14b300509a62":"188jd","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","axios":"jo6P5"}],"188jd":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("3gKDs") + "card_back.d444d91b.svg" + "?" + Date.now();
