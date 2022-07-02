@@ -1,6 +1,6 @@
 # Three and Two 🃗🃇🂥🂵🃅
 
-A card game from my childhood. The goal is to collect two cards of the same number, and three cards of the same number. Find them? You won! But be fast, because the computer knows how to do it too 👀. Check it out 👉🏽 [here](https://bci1im.csb.app/)
+A card game from my childhood. The goal is to collect two cards of the same number, and three cards of the same number. Find them? You won! But be fast, because the computer knows how to do it too 👀. Check it out 👉🏽 [here](https://three-and-two-game.netlify.app/)
 
 ![](game-view.png)
 
