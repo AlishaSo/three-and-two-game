@@ -23,6 +23,8 @@ let pickedUpCard = null;
 let cardsLeftNum = 42;
 let usersTurn = true;
 let endUserTurn;
+const playerScoreEl = document.querySelector('#player-score');
+const computerScoreEl = document.querySelector('#computer-score');
 
  const getCardDeck = async () => {
   try {
@@ -138,7 +140,9 @@ const addEventListenerToUsersCards = e => {
 }
 
 const checkForWinner = (cardPile, player) => {
-  let countObj = {}
+  let countObj = {};
+  let gamesWon = 0;
+  player = !player ? 'Player1' : player;
   
   cardPile.forEach(card => {
     countObj[card.value] ? 
@@ -148,10 +152,20 @@ const checkForWinner = (cardPile, player) => {
   });
   
   if(Object.keys(countObj).length == 2) {
-    player == 'user' ?
-    alert('Player1 has won! 😁🙌🏽')
+    player != 'computer' ?
+    alert(`${player} has won! 😁🙌🏽`)
     :
     alert('The computer has won ☹️')
+
+    gamesWon = sessionStorage.getItem(player) 
+    if(gamesWon) {
+      console.log(player, gamesWon)
+      gamesWon++;
+      sessionStorage.setItem(player, gamesWon);
+    }
+    else 
+      sessionStorage.setItem(player, 1);
+
     return true;
   }
   return false;
@@ -219,11 +233,32 @@ const playGame = async () => {
   await setupTable();
   let keepPlaying = true;
   let usersName = '';
-  let i = 0;
   let count = 0;
 
-  if(checkForWinner(player1Hand, 'user') || checkForWinner(computersHand, 'computer')) {
+  if(!sessionStorage.getItem('user name')) {
+    usersName = window.prompt('Please enter your name 👇🏽');
+    if(usersName) {
+      sessionStorage.setItem('user name', usersName);
+      usersNameEl.textContent = usersName;
+      usersNameScoreEl.textContent = usersName;
+    }
+  }
+  else {
+    usersName = sessionStorage.getItem('user name');
+    usersNameEl.textContent = usersName;
+    usersNameScoreEl.textContent = usersName;
+  }
+
+  playerScoreEl.textContent = sessionStorage.getItem(usersName) ? sessionStorage.getItem(usersName) : 0;
+  computerScoreEl.textContent = sessionStorage.getItem('Computer') ? sessionStorage.getItem('Computer') : 0;
+
+  if(checkForWinner(player1Hand, usersName)) {
     alert('You lucked out and won without even lifting a finger! 🎉👌🏽');
+    keepPlaying = false;
+  }
+  else if(checkForWinner(computersHand, 'Computer')) {
+    alert('The computer lucked out and won without even trying 🙃👎🏽');
+    keepPlaying = false;
   }
   
   const drawBtn = () => {
@@ -239,21 +274,22 @@ const playGame = async () => {
   }
 
   const addClickListeners = () => {
+    if(window.innerWidth < 800 && window.innerHeight < 1200) {
+      pickupPile.addEventListener('touchend', drawBtn, false);
+      discardPile.addEventListener('touchend', disBtn, false);
+      player1Cards.forEach(card => card.addEventListener('touchend', cardsBtns, false));
+      return;
+    }
     pickupPile.addEventListener('click', drawBtn, false);
     discardPile.addEventListener('click', disBtn, false);
     player1Cards.forEach(card => card.addEventListener('click', cardsBtns, false));
+    
   }
 
   const removeClickListeners = () => {
     pickupPile.removeEventListener('click', drawBtn, false);
     discardPile.removeEventListener('click', disBtn, false);
     player1Cards.forEach(card => card.removeEventListener('click', cardsBtns, false));
-  }
-
-  usersName = window.prompt('Please enter your name 👇🏽');
-  if(usersName) {
-    usersNameEl.textContent = usersName;
-    usersNameScoreEl.textContent = usersName;
   }
 
   addClickListeners(count);
@@ -268,7 +304,7 @@ const playGame = async () => {
 
       await waitForClick();
 
-      if(!checkForWinner(player1Hand, 'user')) {
+      if(!checkForWinner(player1Hand, usersName)) {
         usersTurn = false;
       }
       else
@@ -292,7 +328,7 @@ const playGame = async () => {
         computerPickUp(countObj);
       }
       
-      if(!checkForWinner(computersHand, 'computer')) {
+      if(!checkForWinner(computersHand, 'Computer')) {
         usersTurn = true;
       }
       else {
@@ -308,5 +344,6 @@ const playGame = async () => {
 playGame();
 
 resetBtn.addEventListener('click', () => {
+  pickupPileImg.setAttribute('src', img);
   playGame();
-}, { once: true });
+}, false);
