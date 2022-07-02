@@ -806,10 +806,6 @@ const playGame = async ()=>{
     removeClickListeners();
 };
 playGame();
-resetBtn.addEventListener("click", ()=>{
-    pickupPileImg.setAttribute("src", img);
-    playGame();
-}, false);
 
 },{"643b14b300509a62":"188jd","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","axios":"jo6P5"}],"188jd":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("3gKDs") + "card_back.d444d91b.svg" + "?" + Date.now();

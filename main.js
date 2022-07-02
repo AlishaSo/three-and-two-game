@@ -342,8 +342,3 @@ const playGame = async () => {
   removeClickListeners();
 }
 playGame();
-
-resetBtn.addEventListener('click', () => {
-  pickupPileImg.setAttribute('src', img);
-  playGame();
-}, false);
