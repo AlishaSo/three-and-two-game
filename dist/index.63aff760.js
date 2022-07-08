@@ -560,6 +560,8 @@ let usersTurn = true;
 let endUserTurn;
 const playerScoreEl = document.querySelector("#player-score");
 const computerScoreEl = document.querySelector("#computer-score");
+const infoToggle = document.querySelector("#info-toggle");
+const aside = document.querySelector("#sidebar");
 const getCardDeck = async ()=>{
     try {
         let info = await (0, _axiosDefault.default).get(`${BASE_URL}new/shuffle/?deck_count=1`);
@@ -764,11 +766,21 @@ const playGame = async ()=>{
             pickupPile.addEventListener("touchend", drawBtn, false);
             discardPile.addEventListener("touchend", disBtn, false);
             player1Cards.forEach((card)=>card.addEventListener("touchend", cardsBtns, false));
+            infoToggle.addEventListener("touchend", ()=>{
+                aside.classList.toggle("visible");
+                if (aside.classList.contains("visible")) infoToggle.textContent = "\uD83D\uDC46\uD83C\uDFFD";
+                else infoToggle.textContent = "\uD83D\uDC47\uD83C\uDFFD";
+            });
             return;
         }
         pickupPile.addEventListener("click", drawBtn, false);
         discardPile.addEventListener("click", disBtn, false);
         player1Cards.forEach((card)=>card.addEventListener("click", cardsBtns, false));
+        infoToggle.addEventListener("click", ()=>{
+            aside.classList.toggle("visible");
+            if (aside.classList.contains("visible")) infoToggle.textContent = "\uD83D\uDC46\uD83C\uDFFD";
+            else infoToggle.textContent = "\uD83D\uDC47\uD83C\uDFFD";
+        });
     };
     const removeClickListeners = ()=>{
         pickupPile.removeEventListener("click", drawBtn, false);

@@ -25,6 +25,8 @@ let usersTurn = true;
 let endUserTurn;
 const playerScoreEl = document.querySelector('#player-score');
 const computerScoreEl = document.querySelector('#computer-score');
+const infoToggle = document.querySelector('#info-toggle');
+const aside = document.querySelector('#sidebar');
 
  const getCardDeck = async () => {
   try {
@@ -283,12 +285,29 @@ const playGame = async () => {
       pickupPile.addEventListener('touchend', drawBtn, false);
       discardPile.addEventListener('touchend', disBtn, false);
       player1Cards.forEach(card => card.addEventListener('touchend', cardsBtns, false));
+
+      infoToggle.addEventListener('touchend', () => {
+        aside.classList.toggle('visible');
+
+        if(aside.classList.contains('visible'))
+          infoToggle.textContent = '👆🏽';
+        else
+        infoToggle.textContent = '👇🏽';
+      });
       return;
     }
     pickupPile.addEventListener('click', drawBtn, false);
     discardPile.addEventListener('click', disBtn, false);
     player1Cards.forEach(card => card.addEventListener('click', cardsBtns, false));
     
+    infoToggle.addEventListener('click', () => {
+      aside.classList.toggle('visible');
+
+      if(aside.classList.contains('visible'))
+        infoToggle.textContent = '👆🏽';
+      else
+      infoToggle.textContent = '👇🏽';
+    });
   }
 
   const removeClickListeners = () => {

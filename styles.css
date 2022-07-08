@@ -26,49 +26,83 @@ h1 {
 }
 
 .wrapper {
-  min-width: 600px;
-  max-width: 800px;
+  position: relative;
+}
+
+.container {
+  min-width: 400px;
+  max-width: 600px;
   min-height: 80vh;
-  margin: 5vh auto 5vh 15vw;
-  display: flex;
-  justify-content: space-between;
+  margin: 5vh auto 5vh auto;
+}
+
+#info-toggle {
+  border: 1px solid grey;
+  border-radius: 5px;
+  background-color: #B5B816;
+  position: absolute;
+  top: -5vh;
+  right: 0;
 }
 
 #sidebar {
-  min-width: 180px;
-  height: 30%;
+  min-width: 150px;
+  height: 7%;
   background-color: #B5B816;
   border-radius: 5px;
   padding: .95em .5em .5em;
   margin-top: 2em;
   box-shadow: -1px 1px 4px #1b1b1b;
   text-align: center;
+  position: absolute;
+  top: -4.34em;
+  display: none;
 }
 
-#games-won-h2 {
-  margin-top: 0;
-  margin-bottom: .5em;
-  font-size: 1.3rem;
-  color: #1629B8;
-  text-shadow: 0 0 1px #000000, 0 0 1px#B5B816;
+#sidebar.visible {
+  display: flex;
+}
+
+#score-tally {
+  display: flex;
+  align-items: center;
+  border-right: #1b1b1b 1px solid;
+}
+
+#cards-left-container {
+  display: flex;
+  align-items: center;
+  border-left: #1b1b1b 1px solid;
+}
+
+#player1-score,
+#player2-score,
+#cards-left {
+  font-size: .95rem;
+  color: #252525;
 }
 
 #player1-score {
-  margin-top: .5em;
-  margin-bottom: .5em;
+  margin-right: .5em;
 }
 
 #player2-score {
-  margin-top: .5em;
+  margin-right: .5em;
 }
 
 #cards-left {
-  margin-bottom: .20em;
+  margin-left: .5em;
+  color: #b42727;
 }
 
-hr {
-  width: 90%;
-  color: #1b1b1b;
+@media screen and (min-width: 1250px) {
+  #info-toggle {
+    visibility: hidden;
+  }
+
+  #sidebar {
+    display: flex;
+  }
 }
 
 main {
