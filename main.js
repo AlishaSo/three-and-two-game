@@ -152,7 +152,7 @@ const checkForWinner = (cardPile, player) => {
   });
   
   if(Object.keys(countObj).length == 2) {
-    player != 'computer' ?
+    player != 'Computer' ?
     alert(`${player} has won! 😁🙌🏽`)
     :
     alert('The computer has won ☹️')
@@ -165,6 +165,11 @@ const checkForWinner = (cardPile, player) => {
     }
     else 
       sessionStorage.setItem(player, 1);
+
+    player != 'Computer' ? 
+    playerScoreEl.textContent = sessionStorage.getItem(player)
+    :
+    computerScoreEl.textContent = sessionStorage.getItem('Computer')
 
     return true;
   }

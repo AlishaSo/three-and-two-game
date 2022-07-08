@@ -663,13 +663,14 @@ const checkForWinner = (cardPile, player)=>{
         countObj[card.value] ? countObj[card.value] += 1 : countObj[card.value] = 1;
     });
     if (Object.keys(countObj).length == 2) {
-        player != "computer" ? alert(`${player} has won! 😁🙌🏽`) : alert("The computer has won \u2639\uFE0F");
+        player != "Computer" ? alert(`${player} has won! 😁🙌🏽`) : alert("The computer has won \u2639\uFE0F");
         gamesWon = sessionStorage.getItem(player);
         if (gamesWon) {
             console.log(player, gamesWon);
             gamesWon++;
             sessionStorage.setItem(player, gamesWon);
         } else sessionStorage.setItem(player, 1);
+        player != "Computer" ? playerScoreEl.textContent = sessionStorage.getItem(player) : computerScoreEl.textContent = sessionStorage.getItem("Computer");
         return true;
     }
     return false;
