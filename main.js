@@ -290,9 +290,9 @@ const playGame = async () => {
         aside.classList.toggle('visible');
 
         if(aside.classList.contains('visible'))
-          infoToggle.textContent = '👆🏽';
+          infoToggle.textContent = '❌';
         else
-        infoToggle.textContent = '👇🏽';
+        infoToggle.textContent = 'score';
       });
       return;
     }
@@ -306,7 +306,7 @@ const playGame = async () => {
       if(aside.classList.contains('visible'))
         infoToggle.textContent = '👆🏽';
       else
-      infoToggle.textContent = '👇🏽';
+      infoToggle.textContent = 'score';
     });
   }
 

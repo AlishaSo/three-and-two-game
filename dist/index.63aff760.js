@@ -768,8 +768,8 @@ const playGame = async ()=>{
             player1Cards.forEach((card)=>card.addEventListener("touchend", cardsBtns, false));
             infoToggle.addEventListener("touchend", ()=>{
                 aside.classList.toggle("visible");
-                if (aside.classList.contains("visible")) infoToggle.textContent = "\uD83D\uDC46\uD83C\uDFFD";
-                else infoToggle.textContent = "\uD83D\uDC47\uD83C\uDFFD";
+                if (aside.classList.contains("visible")) infoToggle.textContent = "\u274C";
+                else infoToggle.textContent = "score";
             });
             return;
         }
@@ -779,7 +779,7 @@ const playGame = async ()=>{
         infoToggle.addEventListener("click", ()=>{
             aside.classList.toggle("visible");
             if (aside.classList.contains("visible")) infoToggle.textContent = "\uD83D\uDC46\uD83C\uDFFD";
-            else infoToggle.textContent = "\uD83D\uDC47\uD83C\uDFFD";
+            else infoToggle.textContent = "score";
         });
     };
     const removeClickListeners = ()=>{

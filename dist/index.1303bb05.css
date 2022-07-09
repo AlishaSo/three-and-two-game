@@ -14,6 +14,7 @@ body {
 header {
   background-color: #1b1b1b;
   padding: 1em;
+  position: relative;
 }
 
 h1 {
@@ -23,23 +24,22 @@ h1 {
   margin: 0;
 }
 
-.wrapper {
-  position: relative;
-}
-
 .container {
-  min-width: 400px;
+  min-width: 100%;
   max-width: 600px;
-  min-height: 80vh;
-  margin: 5vh auto;
+  min-height: 75vh;
+  margin: 2.5em auto 1em;
 }
 
 #info-toggle {
-  background-color: #b5b816;
+  cursor: pointer;
   border: 1px solid gray;
   border-radius: 5px;
+  padding: 0 .5em;
+  font-family: inherit;
+  font-size: 1rem;
   position: absolute;
-  top: -5vh;
+  top: 95.5px;
   right: 0;
 }
 
@@ -49,12 +49,12 @@ h1 {
   text-align: center;
   background-color: #b5b816;
   border-radius: 5px;
-  margin-top: 2em;
   padding: .95em .5em .5em;
   display: none;
   position: absolute;
-  top: -4.34em;
-  box-shadow: -1px 1px 4px #1b1b1b;
+  top: 95.5px;
+  right: 40px;
+  box-shadow: 1px 1.5px 4px #1b1b1b;
 }
 
 #sidebar.visible {
@@ -87,16 +87,6 @@ h1 {
   margin-left: .5em;
 }
 
-@media screen and (min-width: 1250px) {
-  #info-toggle {
-    visibility: hidden;
-  }
-
-  #sidebar {
-    display: flex;
-  }
-}
-
 main {
   min-width: 600px;
   flex-direction: column;
@@ -113,8 +103,8 @@ main {
 }
 
 .card {
-  height: 140px;
-  width: 100px;
+  height: 90px;
+  width: 64.2857px;
 }
 
 img {
@@ -128,9 +118,12 @@ img {
   display: flex;
 }
 
+#pickup-pile, #discard-pile {
+  height: 90px;
+  width: 58.9286px;
+}
+
 #pickup-pile, #discard-pile, .card-btn {
-  height: 140px;
-  width: 100px;
   cursor: pointer;
   background-color: #0000;
   border: 0;
@@ -139,7 +132,11 @@ img {
 }
 
 #pickup-pile {
-  margin-right: 2em;
+  margin-right: .25em;
+}
+
+#pickup-and-discard, #player1-side, #player2-side {
+  margin-bottom: 1em;
 }
 
 #player1-side, #player2-side {
@@ -148,9 +145,59 @@ img {
 }
 
 #player1-cards, #player2-cards {
-  width: 100%;
-  justify-content: space-between;
+  width: 80%;
+  margin: 0 auto;
   display: flex;
+}
+
+.card + .card {
+  margin-left: .1em;
+}
+
+@media screen and (min-width: 450px) {
+  #pickup-pile {
+    margin-right: 1em;
+  }
+
+  #player1-cards, #player2-cards {
+    justify-content: space-between;
+  }
+
+  #pickup-pile, #discard-pile, .card {
+    height: 120px;
+    width: 85.7143px;
+  }
+}
+
+@media screen and (min-width: 660px) {
+  .container {
+    min-width: 400px;
+  }
+
+  #pickup-pile, #discard-pile, .card {
+    height: 140px;
+    width: 100px;
+  }
+
+  #pickup-pile {
+    margin-right: 2em;
+  }
+
+  #player1-cards, #player2-cards {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 1250px) {
+  #info-toggle {
+    visibility: hidden;
+  }
+
+  #sidebar {
+    left: 0;
+    right: unset;
+    display: flex;
+  }
 }
 
 /*# sourceMappingURL=index.1303bb05.css.map */
